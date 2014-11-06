@@ -6,9 +6,13 @@ public class Classifier {
 	private String visit(TreeNode p) {
 		if (p.isLeaf())
 			return p.getClassName();
-		if (p.inLeft(instance))
-			return visit(p.getLeft());
-		return visit(p.getRight());
+		
+		TreeNode child = p.getChild(instance);
+		
+		if (child == null) 
+			return p.getClassName();
+		
+		return visit(child);
 	}
 	
 	public String classify(Instance instance) {

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Main {
 	public static DataSet training;
 	public static DataSet test;
-	public static final double TRAINING_RATE = 0.8;
+	public static final double TRAINING_RATE = 0.9;
 	
 	public static void splitSet(DataSet set) {
 		training = new DataSet();
@@ -32,16 +32,23 @@ public class Main {
 		DataSet dataSet = null;
 		
 		try {
-			dataSet = reader.read("breast-cancer.arff");
+			//dataSet = reader.read("soybean.arff");
+			training = reader.read("traning.arff");
+			test = reader.read("test.arff");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		splitSet(dataSet);
+		//splitSet(dataSet);
+		
 		
 		TreeBuilder builder = new TreeBuilder();
-		TreeNode root = builder.buildTree(training);
+		ArrayList<String> a = new ArrayList<String>();
+		TreeNode root = builder.buildTree(training, a);
+		
+		//training.save("traning.arff");
+		//test.save("test.arff");
 		
 		int correct = 0;
 		
@@ -53,11 +60,17 @@ public class Main {
 			if (classified.equals(instance.getAttibute("Class").getValue()))
 				correct++;
 		}
+		/*
+		for (Instance instance: test.getInstances()) {
+			System.out.println(instance.getAttibute("Class").getValue());
+		}
+		*/
 		System.out.println(test.getInstances().size());
 		System.out.println(1.0 * correct / test.getInstances().size());
+		System.out.println(root.getSize());
 		
-		Drawer drawer = new Drawer();
-		drawer.visit(root);
-		System.out.println(drawer.depth + " " + drawer.size);
+		//Drawer drawer = new Drawer();
+		//drawer.visit(root);
+		//System.out.println(drawer.depth + " " + drawer.size);
 	}
 }
